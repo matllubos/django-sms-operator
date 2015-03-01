@@ -68,7 +68,7 @@ class Sender(object):
         return msg_qs
 
     def send(self, phone, text):
-        new_message = SMSMessage.objects.create(phone=phone, text=text, state=SMSMessage.STATE.WAITING)
+        new_message = SMSMessage.objects.create(phone=phone, text=text)
         msg_qs = SMSMessage.objects.filter(pk=new_message.pk)
         self._update_status(msg_qs, self._send_request('SMS', {'items': msg_qs}))
         return new_message
@@ -80,7 +80,7 @@ class DebugSender(Sender):
         return SMSMessage.objects.none()
 
     def send(self, phone, text):
-        return SMSMessage.objects.create(phone=phone, text=text, state=SMSMessage.STATE.DEBUG)
+        return SMSMessage.objects.create(phone=phone, text=text, sender_state=18)
 
 
 sender = Sender() if not SMS_DEBUG else DebugSender()

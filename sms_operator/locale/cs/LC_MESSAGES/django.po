@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-01 17:15+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: models.py:53
+msgid "New"
+msgstr "Nová"
+
+#: models.py:54
+msgid "Not send"
+msgstr "Neodesláno"
+
+#: models.py:56
+msgid "Waiting"
+msgstr "Čeká"
+
+#: models.py:57
+msgid "Unknown state"
+msgstr "Neznámý stav"
+
+#: models.py:58 models.py:59 models.py:60 models.py:73
+msgid "Only partly delivered"
+msgstr "Pouze částečně doručeno"
+
+#: models.py:62 models.py:63
+msgid "Delivered"
+msgstr "Doručeno"
+
+#: models.py:65
+msgid "Error"
+msgstr "Chyba"
+
+#: models.py:66
+msgid "Failed"
+msgstr "Neúspěšné"
+
+#: models.py:67
+msgid "Number does not exist"
+msgstr "Telefonní číslo neexistuje"
+
+#: models.py:68
+msgid "Timeout"
+msgstr "Timeout"
+
+#: models.py:69
+msgid "Number has wrong format"
+msgstr "Telefonní číslo má špatný formát"
+
+#: models.py:70 models.py:71
+msgid "GSM operator error"
+msgstr "Chyba GSM operátora"
+
+#: models.py:72
+msgid "SMS text too long"
+msgstr "Text SMS je příliš dlouhý"
+
+#: models.py:74
+msgid "Message not found"
+msgstr "Zpráva nenalezena"
+
+#: models.py:75
+msgid "Connection error"
+msgstr "Chyba spojení"
+
+#: models.py:77 models.py:78
+msgid "Debug"
+msgstr "Debug"
+
+#: models.py:82
+msgid "created at"
+msgstr "vytvořeno"
+
+#: models.py:83
+msgid "state"
+msgstr "stav"
+
+#: models.py:84
+msgid "sender state"
+msgstr "stav odesílatele"
+
+#: models.py:86
+msgid "phone"
+msgstr "telefon"
+
+#: models.py:87
+msgid "text"
+msgstr "text"
+
+#: models.py:93
+msgid "SMS message"
+msgstr "SMS zpráva"
+
+#: models.py:94
+msgid "SMS messages"
+msgstr "SMS zprávy"

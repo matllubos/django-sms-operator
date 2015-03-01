@@ -81,7 +81,7 @@ class SMSMessage(models.Model):
 
     created_at = models.DateTimeField(verbose_name=_('created at'), null=False, blank=False, auto_now_add=True)
     state = SMSState(verbose_name=_('state'), null=False, blank=False, enum=STATE, editable=False)
-    sender_state = models.PositiveIntegerField(verbose_name=_('state'), null=False, blank=False,
+    sender_state = models.PositiveIntegerField(verbose_name=_('sender state'), null=False, blank=False,
                                                choices=STATE.sender_choices, default=17)
     phone = models.CharField(verbose_name=_('phone'), null=False, blank=False, max_length=20)
     text = models.TextField(verbose_name=_('text'), null=False, blank=False)
