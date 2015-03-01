@@ -10,7 +10,7 @@ except ImportError:
     from setuptools import setup, find_packages
 
 setup(
-    name='sms-operator',
+    name='django-sms-operator',
     version=get_version(),
     description="Python library for sms sending.",
     keywords='django, sms, python',
