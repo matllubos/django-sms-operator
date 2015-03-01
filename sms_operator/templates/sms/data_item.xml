@@ -1,5 +1,0 @@
-<DataItem>
-    <MobileTerminate>{{ phone }}</MobileTerminate>
-    <Text>{{ text }}</Text>
-    <SmsId>{{ id }}</SmsId>
-</DataItem>

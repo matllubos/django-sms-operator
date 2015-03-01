@@ -1,8 +1,0 @@
-<DataTemplate>
-            <DataItem>
-                <MobileTerminate>609112567</MobileTerminate>
-                <NameTerminate>Jiri Dlouhy</NameTerminate>
-                <Text>Stastny Novy Rok !!! </Text>
-                <SmsId>012345678</SmsId>
-            </DataItem>
-        </DataTemplate>

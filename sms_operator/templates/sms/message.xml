@@ -1,18 +1,11 @@
 <?xml version="1.0"?>
 <SmsServices>
-    <DataHeader>
-        <DataType>{{ type }}</DataType>
-        <UserName>{{ username }}</UserName>
-        <Password>{{ password }}</Password>
-    </DataHeader>
-    <DataArray>
-        <DataTemplate>
-            <DataItem>
-                <MobileTerminate>609112567</MobileTerminate>
-                <NameTerminate>Jiri Dlouhy</NameTerminate>
-                <Text>Stastny Novy Rok !!! </Text>
-                <SmsId>012345678</SmsId>
-            </DataItem>
-        </DataTemplate>
-    </DataArray>
+	<DataHeader>
+		<DataType>{{ type }}</DataType>
+		<UserName>{{ username }}</UserName>
+		<Password>{{ password }}</Password>
+	</DataHeader>
+	<DataArray>
+		{% include type_template %}
+	</DataArray>
 </SmsServices>

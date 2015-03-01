@@ -1,0 +1,5 @@
+<DataTemplate>
+	{% for item in items %}
+		{% include "sms/sms.xml" with phone=item.phone text=item.text id=item.pk %}
+	{% endfor %}
+</DataTemplate>
