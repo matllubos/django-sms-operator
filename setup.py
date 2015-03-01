@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from security.version import get_version
+from sms_operator.version import get_version
 
 try:
     from setuptools import setup, find_packages
@@ -36,6 +36,7 @@ setup(
     ],
     install_requires=[
         'django-chamber>=0.0.7',
+        'beautifulsoup4',
     ],
     dependency_links=[
         'https://github.com/matllubos/django-chamber/tarball/0.0.7#egg=django-chamber-0.0.7',
