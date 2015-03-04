@@ -86,6 +86,10 @@ class SMSMessage(models.Model):
     phone = models.CharField(verbose_name=_('phone'), null=False, blank=False, max_length=20)
     text = models.TextField(verbose_name=_('text'), null=False, blank=False)
 
+    @property
+    def failed(self):
+        return self.state == self.STATE.ERROR
+
     def __unicode__(self):
         return self.phone
 
