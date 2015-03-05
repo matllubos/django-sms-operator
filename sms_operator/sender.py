@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _
 
 from bs4 import BeautifulSoup
 
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, RequestException, Timeout
 
 from .models import SMSMessage
 from .conf import SMS_URL, SMS_USER, SMS_PASSWORD, SMS_DEBUG
@@ -39,13 +39,13 @@ class Sender(object):
     def _send_request(self, type, extra_context=None):
         try:
             return requests.post(SMS_URL, data={'xml': self._construct_request(type, extra_context)})
-        except ConnectionError:
+        except RequestException:
             return None
 
     def _update_status(self, msg_qs, resp):
-        if not resp or resp.content and msg_qs.exists():
+        if (not resp or not resp.content) and msg_qs.exists():
             LOGGER.warning(_('SMS messages state with numbers: %s can not be updated because service is unavailable.'),
-                           ', '.join((phone for msg.phone in msg_qs)))
+                           ', '.join((msg.phone for msg in msg_qs)))
         else:
             bs = BeautifulSoup(resp.content)
             pk_list = set(msg_qs.values_list('pk', flat=True))
@@ -58,19 +58,16 @@ class Sender(object):
                 msg.save()
 
                 if msg.failed:
-                    LOGGER.warning(_('SMS messages with number: %s failed to sent %s reason is %s.'), msg.phone,
+                    LOGGER.warning(_('SMS messages with number: %s failed to sent the reason is "%s".'), msg.phone,
                                    msg.get_sender_state_display())
 
                 pk_list.remove(id)
 
             unknown_msg_qs = SMSMessage.objects.filter(pk__in=pk_list)
             if unknown_msg_qs.exists():
-                for id in unknown_msg_qs:
-                    msg = msg_qs.get(pk=id)
-                    msg.sender_state = 15
-                    msg.save()
-                LOGGER.warning(_('SMS messages with numbers: %s can not be updated because had neber been sent.'),
-                               ', '.join((phone for msg.phone in unknown_msg_qs)))
+                LOGGER.warning(_('SMS messages with numbers: %s can not be updated because service does not return '
+                                 'right informations.'),
+                               ', '.join((msg.phone for msg in unknown_msg_qs)))
 
     def update_status(self):
         msg_qs = SMSMessage.objects.filter(state=SMSMessage.STATE.WAITING)
@@ -84,11 +81,11 @@ class Sender(object):
         new_message = SMSMessage.objects.create(phone=phone, text=text)
         msg_qs = SMSMessage.objects.filter(pk=new_message.pk)
         resp = self._send_request('SMS', {'items': msg_qs})
-        if not resp:
+        if not resp or not resp.content:
             new_message.sender_state = 16
             new_message.save()
-            LOGGER.warning(_('SMS messages with number: %s failed to sent %s reason is %s.'), msg.phone,
-                           msg.get_sender_state_display())
+            LOGGER.warning(_('SMS messages with number: %s failed to sent the reason is "%s".'), new_message.phone,
+                           new_message.get_sender_state_display())
         else:
             self._update_status(msg_qs, resp)
         return new_message

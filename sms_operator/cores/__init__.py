@@ -13,6 +13,7 @@ class SMSMessageIsCore(UIRestModelISCore):
         'created_at', 'state', 'sender_state', 'phone'
     )
     abstract = True
+    form_fields = ('created_at', 'state', 'sender_state', 'phone', 'text')
 
     def has_create_permission(self, request, obj=None):
         return False

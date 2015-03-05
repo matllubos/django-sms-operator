@@ -43,8 +43,9 @@ class SMSState(models.PositiveIntegerField):
         """
         This model field is not editable value is set according to sender_state value
         """
-
-        return self.enum.get_value_from_sender_value(getattr(model_instance, 'sender_state'))
+        value = self.enum.get_value_from_sender_value(getattr(model_instance, 'sender_state'))
+        setattr(model_instance, self.attname, value)
+        return value
 
 
 class SMSMessage(models.Model):
@@ -96,3 +97,4 @@ class SMSMessage(models.Model):
     class Meta:
         verbose_name = _('SMS message')
         verbose_name_plural = _('SMS messages')
+        ordering = ('-created_at',)
