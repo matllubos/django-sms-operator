@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-01 17:15+0100\n"
+"POT-Creation-Date: 2015-05-10 13:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,94 +18,142 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: models.py:53
+#: models.py:59
 msgid "New"
 msgstr "Nová"
 
-#: models.py:54
+#: models.py:60
 msgid "Not send"
 msgstr "Neodesláno"
 
-#: models.py:56
+#: models.py:62
 msgid "Waiting"
 msgstr "Čeká"
 
-#: models.py:57
+#: models.py:63
 msgid "Unknown state"
 msgstr "Neznámý stav"
 
-#: models.py:58 models.py:59 models.py:60 models.py:73
+#: models.py:64 models.py:65 models.py:66 models.py:79
 msgid "Only partly delivered"
 msgstr "Pouze částečně doručeno"
 
-#: models.py:62 models.py:63
+#: models.py:68 models.py:69
 msgid "Delivered"
 msgstr "Doručeno"
 
-#: models.py:65
+#: models.py:71
 msgid "Error"
 msgstr "Chyba"
 
-#: models.py:66
+#: models.py:72
 msgid "Failed"
 msgstr "Neúspěšné"
 
-#: models.py:67
+#: models.py:73
 msgid "Number does not exist"
 msgstr "Telefonní číslo neexistuje"
 
-#: models.py:68
+#: models.py:74
 msgid "Timeout"
 msgstr "Timeout"
 
-#: models.py:69
+#: models.py:75
 msgid "Number has wrong format"
 msgstr "Telefonní číslo má špatný formát"
 
-#: models.py:70 models.py:71
+#: models.py:76 models.py:77
 msgid "GSM operator error"
 msgstr "Chyba GSM operátora"
 
-#: models.py:72
+#: models.py:78
 msgid "SMS text too long"
 msgstr "Text SMS je příliš dlouhý"
 
-#: models.py:74
+#: models.py:80
 msgid "Message not found"
 msgstr "Zpráva nenalezena"
 
-#: models.py:75
+#: models.py:81
 msgid "Connection error"
 msgstr "Chyba spojení"
 
-#: models.py:77 models.py:78
+#: models.py:83 models.py:84
 msgid "Debug"
 msgstr "Debug"
 
-#: models.py:82
+#: models.py:88
 msgid "created at"
 msgstr "vytvořeno"
 
-#: models.py:83
+#: models.py:89
 msgid "state"
 msgstr "stav"
 
-#: models.py:84
+#: models.py:90
 msgid "sender state"
 msgstr "stav odesílatele"
 
-#: models.py:86
+#: models.py:92
 msgid "phone"
 msgstr "telefon"
 
-#: models.py:87
+#: models.py:93
 msgid "text"
 msgstr "text"
 
-#: models.py:93
-msgid "SMS message"
-msgstr "SMS zpráva"
+#: models.py:103
+msgid "Log SMS message"
+msgstr "Logovaná SMS zpráva"
 
-#: models.py:94
-msgid "SMS messages"
-msgstr "SMS zprávy"
+#: models.py:104
+msgid "Log SMS messages"
+msgstr "Log SMS zpráv"
+
+#: models.py:110
+msgid "slug"
+msgstr "slug"
+
+#: models.py:111
+msgid "message body"
+msgstr "text zprávy"
+
+#: models.py:117
+msgid "SMS template"
+msgstr "SMS šablona"
+
+#: models.py:118
+msgid "SMS templates"
+msgstr "SMS šablony"
+
+#: sender.py:53
+#, python-format
+msgid ""
+"SMS messages state with numbers: %s can not be updated because service is "
+"unavailable."
+msgstr ""
+"Stav SMS zprávy s číslem %s nemůže být aktualizován z důvodu nedostupnosti služby"
+
+#: sender.py:67 sender.py:93
+#, python-format
+msgid ""
+"SMS messages with number %(phone)s failed to sent the reason is \"%(reason)s"
+"\"."
+msgstr ""
+"SMS zprávu na telefonní číslo %(phone)s se nepodařilo odeslat, důvodem je \"%(reason)s\""
+
+#: sender.py:74
+#, python-format
+msgid ""
+"SMS messages with numbers %s can not be updated because service does not "
+"return right informations."
+msgstr ""
+"SMS zprávu odeslanou na telefonní číslo %s se nepodařilo aktualizovat z důvodu špatné odpovědi od služby"
+
+#: sender.py:104
+#, python-format
+msgid ""
+"SMS message template with slug %(slug)s does not exist. The message to "
+"%(phone)s can not be sent."
+msgstr ""
+"Šablona SMS zprávy se slugem %(slug)s neexistuje. Zprávu na telefonní číslo %(phone)s nebylo možné odeslat."

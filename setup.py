@@ -35,11 +35,13 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Site Management',
     ],
     install_requires=[
-        'django-chamber>=0.0.7',
+        'django-chamber>=0.0.10',
         'beautifulsoup4',
+        'django-easymode==1.4b2',
+        'Unidecode>=0.04.16',
     ],
     dependency_links=[
-        'https://github.com/matllubos/django-chamber/tarball/0.0.7#egg=django-chamber-0.0.7',
+        'https://github.com/matllubos/django-chamber/tarball/0.0.10#egg=django-chamber-0.0.10',
     ],
     zip_safe=False
 )

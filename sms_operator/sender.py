@@ -3,20 +3,26 @@ from __future__ import unicode_literals
 import logging
 import requests
 
+from unidecode import unidecode
+
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
+from django.template import Context, Template
 
 from bs4 import BeautifulSoup
 
 from requests.exceptions import ConnectionError, RequestException, Timeout
 
-from .models import SMSMessage
+from .models import SMSMessage, SMSTemplate
 from .conf import SMS_URL, SMS_USER, SMS_PASSWORD, SMS_DEBUG
 
 
-LOGGER = logging.getLogger('django-sms-operator')
+LOGGER = logging.getLogger('sms-operator')
 
 class Sender(object):
+
+    class SMSSendingError(Exception):
+        pass
 
     TEMPLATES = {
         'SMS':'sms/send.xml',
@@ -58,14 +64,14 @@ class Sender(object):
                 msg.save()
 
                 if msg.failed:
-                    LOGGER.warning(_('SMS messages with number: %s failed to sent the reason is "%s".'), msg.phone,
-                                   msg.get_sender_state_display())
+                    LOGGER.warning(_('SMS messages with number %(phone)s failed to sent the reason is "%(reason)s".') %
+                                   {'phone': msg.phone, 'reason': msg.get_sender_state_display()})
 
                 pk_list.remove(id)
 
             unknown_msg_qs = SMSMessage.objects.filter(pk__in=pk_list)
             if unknown_msg_qs.exists():
-                LOGGER.warning(_('SMS messages with numbers: %s can not be updated because service does not return '
+                LOGGER.warning(_('SMS messages with numbers %s can not be updated because service does not return '
                                  'right informations.'),
                                ', '.join((msg.phone for msg in unknown_msg_qs)))
 
@@ -78,17 +84,27 @@ class Sender(object):
         return msg_qs
 
     def send(self, phone, text):
-        new_message = SMSMessage.objects.create(phone=phone, text=text)
+        new_message = SMSMessage.objects.create(phone=phone, text=unidecode(text).strip())
         msg_qs = SMSMessage.objects.filter(pk=new_message.pk)
         resp = self._send_request('SMS', {'items': msg_qs})
         if not resp or not resp.content:
             new_message.sender_state = 16
             new_message.save()
-            LOGGER.warning(_('SMS messages with number: %s failed to sent the reason is "%s".'), new_message.phone,
-                           new_message.get_sender_state_display())
+            LOGGER.warning(_('SMS messages with number %(phone)s failed to sent the reason is "%(reason)s".') %
+                           {'phone': new_message.phone, 'reason': new_message.get_sender_state_display()})
         else:
             self._update_status(msg_qs, resp)
         return new_message
+
+    def send_template(self, phone, slug, context):
+        try:
+            sms_template = SMSTemplate.objects.get(slug=slug)
+            return self.send(phone, Template(sms_template.body).render(Context(context)).encode('utf-8'))
+        except SMSTemplate.DoesNotExist:
+            LOGGER.error(_('SMS message template with slug %(slug)s does not exist. '
+                           'The message to %(phone)s can not be sent.') %
+                         {'phone': phone, 'slug': slug})
+            raise self.SMSSendingError('SMS message template with slug %s does not exist' % slug)
 
 
 class DebugSender(Sender):

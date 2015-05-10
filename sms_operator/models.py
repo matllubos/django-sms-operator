@@ -4,7 +4,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.datastructures import SortedDict
 
+from easymode.i18n.decorators import I18n
+
 from chamber.utils.datastructures import ChoicesNumEnum
+from chamber.models.fields import SouthMixin
 
 
 class SMSChoicesNumEnum(ChoicesNumEnum):
@@ -32,19 +35,21 @@ class SMSChoicesNumEnum(ChoicesNumEnum):
         return self.sender_enum.get(sender_val)[1] if sender_val in self.sender_enum else self.ERROR
 
 
-class SMSState(models.PositiveIntegerField):
+class SMSState(SouthMixin, models.PositiveIntegerField):
 
     def __init__(self, *args, **kwargs):
-        self.enum = kwargs.pop('enum')
-        kwargs['choices'] = self.enum.choices
+        self.enum = kwargs.pop('enum', None)
+        if self.enum:
+            kwargs['choices'] = self.enum.choices
         super(SMSState, self).__init__(*args, **kwargs)
 
     def pre_save(self, model_instance, add):
         """
         This model field is not editable value is set according to sender_state value
         """
-        value = self.enum.get_value_from_sender_value(getattr(model_instance, 'sender_state'))
-        setattr(model_instance, self.attname, value)
+        if self.enum:
+            value = self.enum.get_value_from_sender_value(getattr(model_instance, 'sender_state'))
+            setattr(model_instance, self.attname, value)
         return value
 
 
@@ -95,6 +100,19 @@ class SMSMessage(models.Model):
         return self.phone
 
     class Meta:
-        verbose_name = _('SMS message')
-        verbose_name_plural = _('SMS messages')
+        verbose_name = _('Log SMS message')
+        verbose_name_plural = _('Log SMS messages')
         ordering = ('-created_at',)
+
+
+@I18n('body')
+class SMSTemplate(models.Model):
+    slug = models.SlugField(max_length=100, null=False, blank=False, unique=True, verbose_name=_('slug'))
+    body = models.TextField(null=True, blank=False, verbose_name=_('message body'))
+
+    def __unicode__(self):
+        return self.slug
+
+    class Meta:
+        verbose_name = _('SMS template')
+        verbose_name_plural = _('SMS templates')
