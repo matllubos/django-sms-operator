@@ -8,6 +8,7 @@ from unidecode import unidecode
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext as _
 from django.template import Context, Template
+from django.utils.encoding import force_text
 
 from bs4 import BeautifulSoup
 
@@ -84,7 +85,7 @@ class Sender(object):
         return msg_qs
 
     def send(self, phone, text):
-        new_message = SMSMessage.objects.create(phone=phone, text=unidecode(text).strip())
+        new_message = SMSMessage.objects.create(phone=phone, text=unidecode(force_text(text)).strip())
         msg_qs = SMSMessage.objects.filter(pk=new_message.pk)
         resp = self._send_request('SMS', {'items': msg_qs})
         if not resp or not resp.content:
@@ -113,7 +114,7 @@ class DebugSender(Sender):
         return SMSMessage.objects.none()
 
     def send(self, phone, text):
-        return SMSMessage.objects.create(phone=phone, text=text, sender_state=18)
+        return SMSMessage.objects.create(phone=phone, text=unidecode(force_text(text)), sender_state=18)
 
 
 sender = Sender() if not SMS_DEBUG else DebugSender()
