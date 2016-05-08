@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
-from is_core.main import UIRestModelISCore
+from is_core.main import UIRESTModelISCore
 
 from sms_operator.models import SMSMessage, SMSTemplate
 
 
-class SMSMessageIsCore(UIRestModelISCore):
+class SMSMessageISCore(UIRESTModelISCore):
     model = SMSMessage
     list_display = ('created_at', 'state', 'sender_state', 'phone')
     abstract = True
@@ -24,7 +24,7 @@ class SMSMessageIsCore(UIRestModelISCore):
         return False
 
 
-class SMSTemplateIsCore(UIRestModelISCore):
+class SMSTemplateISCore(UIRESTModelISCore):
     model = SMSTemplate
     list_display = ('slug',)
     abstract = True
